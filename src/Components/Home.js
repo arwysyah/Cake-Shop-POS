@@ -1,64 +1,67 @@
 import React from "react";
 
 import "antd/dist/antd.css";
-import { Layout, Menu, Icon, Row, Col,Card, Badge ,Button,Pagination} from "antd";
-import axios from 'axios'
+import {
+  Layout,
+  Menu,
+  Icon,
+  Row,
+  Col,
+  Card,
+  Badge,
+  Button,
+  Pagination
+} from "antd";
+import axios from "axios";
 // import "../Components/styles/Home.css";
 import "../index.css";
-import AddProduct from '../Components/AddProduct'
-import Checkout from '../Components/CheckOut'
-import swal from 'sweetalert'
+import AddProduct from "../Components/AddProduct";
+import Checkout from "../Components/CheckOut";
+import swal from "sweetalert";
+import EditProduct from "./EditProduct";
 const { Meta } = Card;
 const { Header, Sider, Content } = Layout;
-
-
 
 export default class Home extends React.Component {
   state = {
     collapsed: false,
     items: [],
-    content:[],
+    content: [],
     minValue: 0,
     maxValue: 9,
-    searchValue:'',
-   
-   
-    
-   
+    searchValue: ""
   };
-  
-  async componentDidMount(){
-await this.handleProduct()
 
-
+  async componentDidMount() {
+    await this.handleProduct();
   }
-handleProduct=()=>{
-  axios.get('http://localhost:5050/product').then(res=>{
-    this.setState({
-      content:res.data.response
-    })
-  })
-}
+  handleProduct = () => {
+    axios.get("http://localhost:5050/product").then(res => {
+      this.setState({
+        content: res.data.response
+      });
+    });
+  };
 
-
-onSearch=()=>{
- 
-  axios.get(`http://localhost:5050/product//filter/product/search/:lemon`).then(res=>{
-    console.log(res)
-  })
-}
+  onSearch = () => {
+    axios
+      .get(`http://localhost:5050/product//filter/product/search/:lemon`)
+      .then(res => {
+        console.log(res);
+      });
+  };
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
   };
 
-  chooseItem = (item) => {
-    this.setState(prevState=>{
-      return{
-        items:[...prevState.items,item]
-      }
-    })
+  chooseItem = item => {
+    this.setState(prevState => {
+      return {
+        items: [...prevState.items, item]
+      };
+    });
   };
   handleChange = value => {
     if (value <= 1) {
@@ -73,70 +76,74 @@ onSearch=()=>{
       });
     }
   };
-  handleMinus=(index)=>{
-    console.log('index')
-    const cartItem=this.state.items
-   const ca= cartItem[index].quantity --
+  handleMinus = index => {
+    console.log("index");
+    const cartItem = this.state.items;
+    const ca = cartItem[index].quantity--;
     this.setState({
-      items:cartItem
-    })
-    console.log('isi',ca)
-  }
-  handlePlus=(index)=>{
-    const cartItem = this.state.items
-    cartItem[index].quantity ++
-  this.setState( {items:cartItem})
-  }
+      items: cartItem
+    });
+    console.log("isi", ca);
+  };
+  handlePlus = index => {
+    const cartItem = this.state.items;
+    cartItem[index].quantity++;
+    this.setState({ items: cartItem });
+  };
   formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
   onchangeSearch = event => {
-    const search =event.target.value  
-
+    const search = event.target.value;
+if(search)
     this.setState({
       searchValue: search
-    })
-
-  }
-  removeItem(id){
+    });
+  };
+  removeItem(id) {
     this.setState({
       items: this.state.items.filter(item => item.id_product !== id)
-    })
-    
+    });
+
     // .then(()=>{
     //   swal("Transaction Succes!", "Thanks fror Using Our Services!", "success")
     // })
-
-    
-
   }
 
-  handleSearch = event =>{
-    event.preventDefault()
-
-    axios.get(`http://localhost:5050/product//filter/product/search/${this.state.searchValue}`).then(res=>
-   
-    
-    this.setState({
-      content:res.data.response
-    })
-    // console.log(res.data.name)
-    // this.setState({
-    //   searchPoint:res.data.response
-    // })
-    )
-
-  }
+  handleSearch = event => {
+    event.preventDefault();
+if(this.state.searchValue===""){
+  this.handleProduct()
+}else{
+  axios
+      .get(
+        `http://localhost:5050/product//filter/product/search/${this.state.searchValue}`
+      )
+      .then(
+        res =>
+          this.setState({
+            content: res.data.response
+          })
+        // console.log(res.data.name)
+        // this.setState({
+        //   searchPoint:res.data.response
+        // })
+      );
+}
   
-  
+  };
+
   render() {
-    const { content,items } = this.state;
-    let cartItem = this.state.items
-    let total = cartItem.reduce((prev, next) => prev + next.quantity * next.price, 0);
-    let quantities=cartItem.reduce((prev,next)=>prev+next.quantity,0)
-    console.log(total,'total')
+    const { content, items } = this.state;
+    let cartItem = this.state.items;
+    let total = cartItem.reduce(
+      (prev, next) => prev + next.quantity * next.price,
+      0
+    );
+    let quantities = cartItem.reduce((prev, next) => prev + next.quantity, 0);
+    console.log(total, "total");
     console.log(this.state.content);
-    console.log(quantities,'quantities')
+    console.log(quantities, "quantities");
     return (
       <Row>
         <Col span={18}>
@@ -160,7 +167,6 @@ onSearch=()=>{
               </Menu>
             </Sider>
             <Layout>
-             
               <Header style={{ background: "#fff", padding: 0 }}>
                 <Row>
                   <Col span={8}>
@@ -169,21 +175,31 @@ onSearch=()=>{
                       className="trigger"
                       type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
                       onClick={this.toggle}
-                      style={{ fontSize: 29,marginLeft:20 }}
+                      style={{ fontSize: 29, marginLeft: 20 }}
                     />
                   </Col>
                   <Col span={8}>
                     {" "}
                     <div>
-                    <form onSubmit={this.handleSearch}>
-          <div className="input-field" style ={{marginLeft:-40,width:"30%" ,height:30}}>
-              {/* <Icon type="search" /> */}
-          <input id="search" type="search" required onChange={this.onchangeSearch} style={{color:"black" ,marginLeft:80,height:40,backgroundColor:"white"}}/>
-               
-        
-               
-                  </div>
-          </form>
+                      <form onSubmit={this.handleSearch}>
+                        <div
+                          className="input-field"
+                          style={{ marginLeft: -40, width: "30%", height: 30 }}
+                        >
+                          {/* <Icon type="search" /> */}
+                          <input
+                            id="search"
+                            type="search"
+                            onChange={this.onchangeSearch}
+                            style={{
+                              color: "black",
+                              marginLeft: 80,
+                              height: 40,
+                              backgroundColor: "white"
+                            }}
+                          />
+                        </div>
+                      </form>
                     </div>
                   </Col>
                 </Row>
@@ -197,112 +213,172 @@ onSearch=()=>{
                 }}
               >
                 <Row>
-                {
-          content.length > 0 &&
-         
-                  content.slice(this.state.minValue,this.state.maxValue).map((cont, index) => {
-                    return (
-                      <Col span={8} key={index}>
-                        <Card
-                          style={{ height: 240, width: 182, marginTop: 20 ,borderRadius:10}}
-                          hoverable
-                         
-                          cover={
-                            <img
-                            onClick={()=> !items.filter(cart => cart.id_product === cont.id_product).length > 0 && this.chooseItem({...cont, quantity:1})}
-                              alt="example"
-                              src={cont.image_url}
-                              style={{ height: 140, width: 180,borderRadius:10}}
-                            />
-                          }
-                          
-                        >
-                          <Meta title={cont.name} />
-                          <p>Rp. {this.formatNumber(cont.price)} </p>
-                          <Row>
-                            <Col span={12}> <p><a>Edit</a></p></Col>
-                            <Col span={12}> <p><a onClick={()=>{
-                              axios.delete(`http://localhost:5050/product/${cont.id_product}`).then(res=>{
-                               
-                                swal("Delete  Succes!", "Data has been Deleted!", "success").then(()=>{
-                                  window.location.reload(true)
-                                })
+                  {content.length > 0 &&
+                    content
+                      .slice(this.state.minValue, this.state.maxValue)
+                      .map((cont, index) => {
+                        return (
+                          <Col span={8} key={index}>
+                            <Card
+                              style={{
+                                height: 240,
+                                width: "76%",
+                                marginTop: 20,
+                                borderRadius: 10
+                              }}
+                              hoverable
+                              cover={
+                                <img
+                                  onClick={() =>
+                                    !items.filter(
+                                      cart =>
+                                        cart.id_product === cont.id_product
+                                    ).length > 0 &&
+                                    this.chooseItem({ ...cont, quantity: 1 })
+                                  }
+                                  alt="example"
+                                  src={cont.image_url}
+                                  style={{
+                                    height: 140,
+                                    // width: 180,
+                                    borderRadius: 10
+                                  }}
+                                />
+                              }
+                            >
+                              <Meta title={cont.name} />
+                              {this.state.items.filter(cart => cont.id_product === cart.id_product)
+                        .length > 0 && (
+                              <img
+                          style={{
+                            position: "absolute",
+                            bottom: "50%",
+                            left: "25%",
+                            paddingLeft: 10
+                          }}
+                          width="50%"
+                          src="https://image.flaticon.com/icons/svg/179/179372.svg"
+                        />
+                     ) }
+                              <p>Rp. {this.formatNumber(cont.price)} </p>
                                 
-                              })
-                            }}>Delete</a></p></Col>
-                          </Row>
-                        </Card>
-                      </Col>
-                    );
-                  })
-                  }
+                              <Row>
+                                <Col span={12}>
+                                  {" "}
+                                  <p>
+                                    <EditProduct
+                                      count={cont}
+                                      id_product={cont.id_product}
+                                    />
+                                  </p>
+                                </Col>
+                                <Col span={12}>
+                                  {" "}
+                                  <p>
+                                    <a
+                                      onClick={() => {
+                                        axios
+                                          .delete(
+                                            `http://localhost:5050/product/${cont.id_product}`
+                                          )
+                                          .then(res => {
+                                            swal(
+                                              "Delete  Succes!",
+                                              "Data has been Deleted!",
+                                              "success"
+                                            ).then(() => {
+                                              window.location.reload(true);
+                                            });
+                                          });
+                                      }}
+                                    >
+                                      Delete
+                                    </a>
+                                  </p>
+                                </Col>
+                              </Row>
+                            </Card>
+                          </Col>
+                        );
+                      })}
                 </Row>
-              
               </Content>
-              <div style={{marginLeft:330,marginTop:-20}}>
-              <Pagination 
-          defaultCurrent={1}
-          defaultPageSize={9}
-          onChange={this.handleChange}
-          total={15}
-        />
-        </div>
+              <div style={{ marginLeft: 330, marginTop: -20 }}>
+                <Pagination
+                  defaultCurrent={1}
+                  defaultPageSize={9}
+                  onChange={this.handleChange}
+                  total={15}
+                />
+              </div>
             </Layout>
-           
           </Layout>
-          
         </Col>
 
         <Col style={{ border: "1px solid black", height: 45 }} span={6}>
           <p style={{ textAlign: "center" }}>
             Cart
-            <Badge count={this.state.count} style={{ backgroundColor: "blue",color:'black' }} />
+            <Badge
+              count={this.state.count}
+              style={{ backgroundColor: "blue", color: "black" }}
+            />
           </p>
         </Col>
         <Col span={6}>
-          
           <Row>
-         {this.state.items.length > 0 ? (
-            items.map((c,i)=>(
-              <div style={{ top: 30 }} 
-              key={i}>
-            <Col span={9}>
-              <img
-                alt="example"
-                src={c.image_url}
-                style={{ height: '60,5%', width: '88%' ,borderRadius:5}}
-              />
-              
-            </Col>
-            <Col span={10}>
-              <p style={{left:100,fontWeight:'bold'}}>{c.name}</p>
-              <Button  className="button" style={{backgroundColor:'#aff589',color:'black'}}
-             onClick={()=>{this.handleMinus(i)}} >
-              <Icon type="minus" />
-              </Button>
-  <input type="text" style={{width:40,height:30,textAlign:'center'}} value={c.quantity}></input>
-            <Button type="primary" style={{backgroundColor:'#aff589',color:'black'}}
-            onClick={()=>{this.handlePlus(i)}}>
-            <Icon type="plus" />
-            </Button>
-<p style={{height:40}}>Total :  {c.price*c.quantity}</p>
-            </Col>
-            <Col span={5} style={{marginTop:20}}>
-             {c.quantity===0 ? this.removeItem(c.id_product):""}
-             <p
-               onClick={()=>this.removeItem(c.id_product)}><a style={{fontSize:25}}>
-                 <Icon type="delete" style={{fontSize:25}}
-               style={{color:'green'}}/></a></p>
-              <p>
-
-                Rp. {this.formatNumber(c.price)}
-              </p>
-            </Col>
-           
-            </div>
-            ))
-            ): (
-
+            {this.state.items.length > 0 ? (
+              items.map((c, i) => (
+                <div style={{ top: 30 }} key={i}>
+                  <Col span={9}>
+                    <img
+                      alt="example"
+                      src={c.image_url}
+                      style={{ height: "60,5%", width: "88%", borderRadius: 5 }}
+                    />
+                  </Col>
+                  <Col span={10}>
+                    <p style={{ left: 100, fontWeight: "bold" }}>{c.name}</p>
+                    <Button
+                      className="button"
+                      style={{ backgroundColor: "#aff589", color: "black" }}
+                      onClick={() => {
+                        this.handleMinus(i);
+                      }}
+                    >
+                      <Icon type="minus" />
+                    </Button>
+                    <input
+                      type="text"
+                      style={{ width: 40, height: 30, textAlign: "center" }}
+                      value={c.quantity}
+                    ></input>
+                    <Button
+                      type="primary"
+                      style={{ backgroundColor: "#aff589", color: "black" }}
+                      onClick={() => {
+                        this.handlePlus(i);
+                      }}
+                    >
+                      <Icon type="plus" />
+                    </Button>
+                    <p style={{ height: 40 }}>Total : {c.price * c.quantity}</p>
+                  </Col>
+                  <Col span={5} style={{ marginTop: 20 }}>
+                    {c.quantity === 0 ? this.removeItem(c.id_product) : ""}
+                    <p onClick={() => this.removeItem(c.id_product)}>
+                      <a style={{ fontSize: 25 }}>
+                        <Icon
+                          type="delete"
+                          style={{ fontSize: 25 }}
+                          style={{ color: "green" }}
+                        />
+                      </a>
+                    </p>
+                    <p>Rp. {this.formatNumber(c.price)}</p>
+                  </Col>
+                </div>
+              ))
+            ) : (
               <div style={{ paddingTop: "40%" }}>
                 <img
                   width="100%"
@@ -310,18 +386,26 @@ onSearch=()=>{
                   alt="cart"
                 />
               </div>
-              )}
+            )}
           </Row>
-           
-          <div className="check" style={{marginLeft:30,marginTop:120}} >
-          <p style={{fontWeight:'bold'}}>Total Belanja : Rp.{this.formatNumber(total)}</p>
-          {/* <Button type="primary" style={{width:280,backgroundColor:'#57CAD5'}}>Checkout</Button> */}
-          <Checkout
-          quantities={quantities}
-          total={total}
-          dataCheckout={this.state.items} />
-        <p></p>
-          <Button type="primary" style={{left:-10,width:240,backgroundColor:'#F24F8A'}}>Cancel</Button>
+
+          <div className="check" style={{ marginLeft: 30, marginTop: 120 }}>
+            <p style={{ fontWeight: "bold" }}>
+              Total Belanja : Rp.{this.formatNumber(total)}
+            </p>
+            {/* <Button type="primary" style={{width:280,backgroundColor:'#57CAD5'}}>Checkout</Button> */}
+            <Checkout
+              quantities={quantities}
+              total={total}
+              dataCheckout={this.state.items}
+            />
+            <p></p>
+            <Button
+              type="primary"
+              style={{ left: -10, width: 240, backgroundColor: "#F24F8A" }}
+            >
+              Cancel
+            </Button>
           </div>
         </Col>
       </Row>
