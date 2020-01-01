@@ -19,6 +19,8 @@ import AddProduct from "../Components/AddProduct";
 import Checkout from "../Components/CheckOut";
 import swal from "sweetalert";
 import EditProduct from "./EditProduct";
+import Login from "./Login";
+// import jwt_decode from 'jwt-decode'
 const { Meta } = Card;
 const { Header, Sider, Content } = Layout;
 
@@ -29,7 +31,8 @@ export default class Home extends React.Component {
     content: [],
     minValue: 0,
     maxValue: 9,
-    searchValue: ""
+    searchValue: "",
+    tokens:localStorage.getItem('jwt')
   };
 
   async componentDidMount() {
@@ -95,61 +98,74 @@ export default class Home extends React.Component {
   }
   onchangeSearch = event => {
     const search = event.target.value;
-if(search)
-    this.setState({
-      searchValue: search
-    });
+    if (search)
+      this.setState({
+        searchValue: search
+      });
   };
   removeItem(id) {
     this.setState({
       items: this.state.items.filter(item => item.id_product !== id)
     });
 
-    // .then(()=>{
-    //   swal("Transaction Succes!", "Thanks fror Using Our Services!", "success")
-    // })
+  
   }
 
   handleSearch = event => {
     event.preventDefault();
-if(this.state.searchValue===""){
-  this.handleProduct()
-}else{
-  axios
-      .get(
-        `http://localhost:5050/product//filter/product/search/${this.state.searchValue}`
-      )
-      .then(
-        res =>
-          this.setState({
-            content: res.data.response
-          })
-        // console.log(res.data.name)
-        // this.setState({
-        //   searchPoint:res.data.response
-        // })
-      );
-}
-  
+    if (this.state.searchValue === "") {
+      this.handleProduct();
+    } else {
+      axios
+        .get(
+          `http://localhost:5050/product//filter/product/search/${this.state.searchValue}`
+        )
+        .then(
+          res =>
+            this.setState({
+              content: res.data.response
+            })
+          // console.log(res.data.name)
+          // this.setState({
+          //   searchPoint:res.data.response
+          // })
+        );
+    }
   };
+  handleReload = () => {
+    window.location.reload(true);
+  };
+ 
+  logout=()=>{
+    
+    localStorage.removeItem('jwt')
+      swal("Logout Succes!", "Thanks fror Using Our Services!", "success")
+    
+    window.location.reload(true)
 
+  }
   render() {
-    const { content, items } = this.state;
+    console.log(localStorage,'local')
+    const { content, items,tokens } = this.state;
     let cartItem = this.state.items;
     let total = cartItem.reduce(
       (prev, next) => prev + next.quantity * next.price,
       0
     );
     let quantities = cartItem.reduce((prev, next) => prev + next.quantity, 0);
-    console.log(total, "total");
-    console.log(this.state.content);
-    console.log(quantities, "quantities");
+    // console.log(total, "total");
+    // console.log(this.state.content);
+    // console.log(quantities, "quantities");
+   console.log(tokens)
+   
     return (
+      
       <Row>
         <Col span={18}>
           <Layout>
             <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
               <div className="logo" />
+
               <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
                 <Menu.Item key="1">
                   <Icon type="shop" style={{ fontSize: 29 }} />
@@ -157,19 +173,43 @@ if(this.state.searchValue===""){
                 <Menu.Item key="2">
                   <Icon type="video-camera" style={{ fontSize: 29 }} />
                 </Menu.Item>
+             
+               
                 <Menu.Item key="3">
                   <AddProduct />
                   <Icon
                     type="plus-square"
-                    style={{ color: "green", fontSize: 29, left: 4 }}
+                    style={{ color: "green", fontSize: 29 }}
                   />
                 </Menu.Item>
+               
+                  {/* {tokens.length === 0 ?( */}
+                <Menu.Item key="4">
+              
+                <Icon
+                onClick={this.logout}
+                  type="logout"
+                  style={{ color: "red", fontSize: 29, left: 4 }}
+                />
+              
+              </Menu.Item>
+                 {/* ):( */}
+               
+                 <Menu.Item key="5">
+                 <Login />
+                   <Icon
+                     type="user-add"
+                     style={{ color: "red", fontSize: 29, left: 4 }}
+                   />
+                 
+                 </Menu.Item>
+               {/* )} */}
               </Menu>
             </Sider>
             <Layout>
               <Header style={{ background: "#fff", padding: 0 }}>
                 <Row>
-                  <Col span={8}>
+                  <Col span={10}>
                     {" "}
                     <Icon
                       className="trigger"
@@ -179,28 +219,53 @@ if(this.state.searchValue===""){
                     />
                   </Col>
                   <Col span={8}>
-                    {" "}
-                    <div>
-                      <form onSubmit={this.handleSearch}>
-                        <div
-                          className="input-field"
-                          style={{ marginLeft: -40, width: "30%", height: 30 }}
-                        >
-                          {/* <Icon type="search" /> */}
-                          <input
-                            id="search"
-                            type="search"
-                            onChange={this.onchangeSearch}
-                            style={{
-                              color: "black",
-                              marginLeft: 80,
-                              height: 40,
-                              backgroundColor: "white"
-                            }}
-                          />
+                    <Row>
+                      <Col span={8} style={{ marginLeft: -190 }}>
+                        <Row>
+                          <Col span={12}>
+                            {" "}
+                            <p> ChocoShop</p>
+                          </Col>
+                          <Col span={12} style={{ right: -40 }}>
+                            <a>
+                              <img
+                                src="https://image.flaticon.com/icons/svg/1312/1312173.svg"
+                                alt="hr"
+                                style={{ width: "85%" }}
+                                onClick={this.handleReload}
+                              />
+                            </a>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col span={14}>
+                        <div>
+                          <form onSubmit={this.handleSearch}>
+                            <div
+                              className="input-field"
+                              style={{
+                                marginLeft: -40,
+                                width: "30%",
+                                height: 30
+                              }}
+                            >
+                              {/* <Icon type="search" /> */}
+                              <input
+                                id="search"
+                                type="search"
+                                onChange={this.onchangeSearch}
+                                style={{
+                                  color: "black",
+                                  marginLeft: 80,
+                                  height: 40,
+                                  backgroundColor: "white"
+                                }}
+                              />
+                            </div>
+                          </form>
                         </div>
-                      </form>
-                    </div>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Header>
@@ -247,22 +312,25 @@ if(this.state.searchValue===""){
                               }
                             >
                               <Meta title={cont.name} />
-                              {this.state.items.filter(cart => cont.id_product === cart.id_product)
-                        .length > 0 && (
-                              <img
-                          style={{
-                            position: "absolute",
-                            bottom: "50%",
-                            left: "25%",
-                            paddingLeft: 10
-                          }}
-                          width="50%"
-                          src="https://image.flaticon.com/icons/svg/179/179372.svg"
-                        />
-                     ) }
+                              {this.state.items.filter(
+                                cart => cont.id_product === cart.id_product
+                              ).length > 0 && (
+                                <img
+                                  style={{
+                                    position: "absolute",
+                                    bottom: "50%",
+                                    left: "25%",
+                                    paddingLeft: 10
+                                  }}
+                                  width="50%"
+                                  src="https://image.flaticon.com/icons/svg/179/179372.svg"
+                                />
+                              )}
                               <p>Rp. {this.formatNumber(cont.price)} </p>
-                                
+                                 
                               <Row>
+                              {this.state.tokens > 0 ? 
+                              <div>
                                 <Col span={12}>
                                   {" "}
                                   <p>
@@ -296,7 +364,10 @@ if(this.state.searchValue===""){
                                     </a>
                                   </p>
                                 </Col>
+                                </div>
+                                 : ""} 
                               </Row>
+                              
                             </Card>
                           </Col>
                         );
