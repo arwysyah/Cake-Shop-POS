@@ -7,6 +7,7 @@ import axios from 'axios'
 import "../index.css";
 import AddProduct from '../Components/AddProduct'
 import Checkout from '../Components/CheckOut'
+import swal from 'sweetalert'
 const { Meta } = Card;
 const { Header, Sider, Content } = Layout;
 
@@ -100,7 +101,13 @@ onSearch=()=>{
   removeItem(id){
     this.setState({
       items: this.state.items.filter(item => item.id_product !== id)
-    });
+    })
+    
+    // .then(()=>{
+    //   swal("Transaction Succes!", "Thanks fror Using Our Services!", "success")
+    // })
+
+    
 
   }
 
@@ -120,6 +127,8 @@ onSearch=()=>{
     )
 
   }
+  
+  
   render() {
     const { content,items } = this.state;
     let cartItem = this.state.items
@@ -142,6 +151,7 @@ onSearch=()=>{
                   <Icon type="video-camera" style={{ fontSize: 29 }} />
                 </Menu.Item>
                 <Menu.Item key="3">
+                  <AddProduct />
                   <Icon
                     type="plus-square"
                     style={{ color: "green", fontSize: 29, left: 4 }}
@@ -150,7 +160,7 @@ onSearch=()=>{
               </Menu>
             </Sider>
             <Layout>
-              <AddProduct />
+             
               <Header style={{ background: "#fff", padding: 0 }}>
                 <Row>
                   <Col span={8}>
@@ -194,19 +204,33 @@ onSearch=()=>{
                     return (
                       <Col span={8} key={index}>
                         <Card
-                          style={{ height: '30%', width: '22,5%', marginTop: 20 ,borderRadius:10}}
+                          style={{ height: 240, width: 182, marginTop: 20 ,borderRadius:10}}
                           hoverable
-                          onClick={()=> !items.filter(cart => cart.id_product === cont.id_product).length > 0 && this.chooseItem({...cont, quantity:1})}
+                         
                           cover={
                             <img
+                            onClick={()=> !items.filter(cart => cart.id_product === cont.id_product).length > 0 && this.chooseItem({...cont, quantity:1})}
                               alt="example"
                               src={cont.image_url}
-                              style={{ height: '30%', width: '22,5%',borderRadius:10}}
+                              style={{ height: 140, width: 180,borderRadius:10}}
                             />
                           }
+                          
                         >
                           <Meta title={cont.name} />
                           <p>Rp. {this.formatNumber(cont.price)} </p>
+                          <Row>
+                            <Col span={12}> <p><a>Edit</a></p></Col>
+                            <Col span={12}> <p><a onClick={()=>{
+                              axios.delete(`http://localhost:5050/product/${cont.id_product}`).then(res=>{
+                               
+                                swal("Delete  Succes!", "Data has been Deleted!", "success").then(()=>{
+                                  window.location.reload(true)
+                                })
+                                
+                              })
+                            }}>Delete</a></p></Col>
+                          </Row>
                         </Card>
                       </Col>
                     );
@@ -266,7 +290,9 @@ onSearch=()=>{
             <Col span={5} style={{marginTop:20}}>
              {c.quantity===0 ? this.removeItem(c.id_product):""}
              <p
-               onClick={()=>this.removeItem(c.id_product)}><a>remove</a></p>
+               onClick={()=>this.removeItem(c.id_product)}><a style={{fontSize:25}}>
+                 <Icon type="delete" style={{fontSize:25}}
+               style={{color:'green'}}/></a></p>
               <p>
 
                 Rp. {this.formatNumber(c.price)}
