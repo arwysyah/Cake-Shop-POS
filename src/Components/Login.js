@@ -127,6 +127,7 @@ export default class Login extends React.Component {
                 name="password"
                 //  value={this.state.price}
                 onChange={this.handleChange}
+                // type='password'
               />
             </Form.Item>
         </Form>

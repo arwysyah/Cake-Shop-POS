@@ -396,7 +396,7 @@ console.log(this.state.newData,'2')
                                     <Col span={12}>
                                       {" "}
                                       <p>
-                                        <a href='delete'
+                                        <a 
                                           onClick={() => {
                                             axios
                                               .delete(

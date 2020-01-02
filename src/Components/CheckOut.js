@@ -40,6 +40,7 @@ class CheckOut extends React.Component {
     let ppn = total * 0.1;
     let sumTotal = total + ppn;
     let quantity = this.props.quantities;
+    let admin = 'Arwy Syahputra Siregar'
     let formData = {
       // total : total,
       total: sumTotal,
@@ -59,11 +60,12 @@ class CheckOut extends React.Component {
           "success"
         )
       )
-      .then(()=>{
-        document.location.href = "/";
+      .then(()=>{   
+       
         var doc = new jsPDF();
         let space = 10;
-        doc.text(`CHocoShop`, 10, (space += 10));
+        doc.text(`Kenzo CHocoShop`, 10, (space += 10));
+        doc.text(`admin : ${admin}`, 10, (space += 10));
         doc.text(` ID Receipt: ${id_receipt}`, 10, (space += 10));
         doc.text(`CHocoShop`, 10, (space += 10));
         
@@ -86,12 +88,12 @@ class CheckOut extends React.Component {
           10,
           (space += 10)
         );
-        doc.text(`Total Quantities ${quantity}`)
+        doc.text(`Total Quantity : ${quantity}`, 10, (space += 10));
         doc.text(`Payment Cash`, 10, (space += 10));
         doc.save(`${id_receipt}.pdf`);
       })
       .then(() => {
-        // window.location.reload(true);
+        document.location.href = "/";
       });
 
     // console.log(dataCheckout[0].name,'checkout')

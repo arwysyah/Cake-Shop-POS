@@ -62,7 +62,7 @@ export default class EditProduct extends React.Component {
         swal("Edit Product Successfully!", "Your Product has Edited", "success")
       )
       .then(() => {
-        window.location.reload(true);
+        document.location.href='/'
       });
   };
 
@@ -102,7 +102,7 @@ export default class EditProduct extends React.Component {
     return (
       <div>
         <p onClick={this.showModal}>
-          <a href='edit'>Edit</a>
+          <a >Edit</a>
         </p>
         <Modal
           visible={visible}
