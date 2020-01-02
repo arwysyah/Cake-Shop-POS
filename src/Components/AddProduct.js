@@ -88,8 +88,8 @@ export default class AddProduct extends React.Component {
   render() {
     let { imagePreviewUrl } = this.state;
     let $imagePreview = null;
-    if (this.setState == false) {
-      $imagePreview = <img src={imagePreviewUrl} />;
+    if (this.setState === false) {
+      $imagePreview = <img src={imagePreviewUrl} alt="i"/>;
     } else {
       $imagePreview = (
         <div className="previewText">Please select an Image for Preview</div>

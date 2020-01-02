@@ -2,7 +2,7 @@ import { Modal, Button,Icon,Form ,Input} from 'antd';
 import React from 'react'
 import Axios from 'axios';
 import Swal from 'sweetalert2'
-import { Redirect } from 'react-router';
+
 
 export default class Login extends React.Component {
   state = {
@@ -39,7 +39,7 @@ export default class Login extends React.Component {
               title: 'Success to Login',
               showConfirmButton: false,
               timer: 500
-            })
+            }).then(window.location.href ='/')
           }else{
             Swal.fire({
                 position: 'top-center',
@@ -54,6 +54,7 @@ export default class Login extends React.Component {
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
+    
   };
 
   handleCancel = () => {
@@ -69,12 +70,12 @@ export default class Login extends React.Component {
   };
 
   render() {
-    if(this.state.loginKey){
-        return (
+    // if(this.state.loginKey){
+    //     return (
           
-        <Redirect to ="/" />
-        )
-    }
+    //     <Redirect to ="/" />
+    //     )
+    // }
   
        
     const { visible, loading } = this.state;
@@ -83,7 +84,7 @@ export default class Login extends React.Component {
         <Icon
         onClick={this.showModal}
                     type="user-add"
-                    style={{ color: "red", fontSize: 29, left: 4 }}
+                    style={{ color: "green", fontSize: 29, left: 4 }}
                   />
         <Modal
           visible={visible}

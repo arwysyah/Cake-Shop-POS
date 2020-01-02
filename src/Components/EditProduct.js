@@ -90,8 +90,8 @@ export default class EditProduct extends React.Component {
     console.log(id_product, "id____");
     let { imagePreviewUrl } = this.state;
     let $imagePreview = null;
-    if (this.setState == false) {
-      $imagePreview = <img src={imagePreviewUrl} />;
+    if (this.setState === false) {
+      $imagePreview = <img src={imagePreviewUrl} alt ="i"/>;
     } else {
       $imagePreview = (
         <div className="previewText">Please select an Image for Preview</div>
@@ -102,7 +102,7 @@ export default class EditProduct extends React.Component {
     return (
       <div>
         <p onClick={this.showModal}>
-          <a>Edit</a>
+          <a href='edit'>Edit</a>
         </p>
         <Modal
           visible={visible}

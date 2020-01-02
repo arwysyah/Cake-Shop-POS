@@ -20,6 +20,8 @@ import Checkout from "../Components/CheckOut";
 import swal from "sweetalert";
 import EditProduct from "./EditProduct";
 import Login from "./Login";
+import { Link } from "react-router-dom";
+
 // import jwt_decode from 'jwt-decode'
 const { Meta } = Card;
 const { Header, Sider, Content } = Layout;
@@ -32,12 +34,55 @@ export default class Home extends React.Component {
     minValue: 0,
     maxValue: 9,
     searchValue: "",
-    tokens:localStorage.getItem('jwt')
+    tokens: localStorage.getItem("jwt"),
+    newData:''
   };
 
   async componentDidMount() {
     await this.handleProduct();
   }
+  
+  sortAscending = () => {
+    let oldData =[]
+    const {content}= this.state
+content.map((d,i)=>{
+  oldData.push(d.name)
+  let newData = oldData.toString()
+  console.log(newData)
+  oldData.sort((a, b) => b.name - a.name) 
+  return( 
+
+    console.log(d.name)
+
+    
+  )
+  
+})
+console.log(this.state.newData,'2')
+    
+       
+  //  console.log('hello')
+  }
+
+  sortDescending = () => {
+    const { content } = this.state;
+    content.sort((a, b) => a - b).reverse()
+    this.setState({ Content })
+  }
+
+//   sortAscending() {
+//     // this.setState(prevState => {
+//       const {content}=this.state
+//       content.name.sort((a, b) => (a.name - b.name))
+  
+//   }
+
+//   sortDescending() {
+//     const {content}=this.state
+//     // this.setState(prevState => {
+//       this.state.content.name.sort((a, b) => (b.name - a.name))
+//   // });
+// }
   handleProduct = () => {
     axios.get("http://localhost:5050/product").then(res => {
       this.setState({
@@ -46,13 +91,13 @@ export default class Home extends React.Component {
     });
   };
 
-  onSearch = () => {
-    axios
-      .get(`http://localhost:5050/product//filter/product/search/:lemon`)
-      .then(res => {
-        console.log(res);
-      });
-  };
+  // onSearch = () => {
+  //   axios
+  //     .get(`http://localhost:5050/product//filter/product/search/:lemon`)
+  //     .then(res => {
+  //       console.log(res);
+  //     });
+  // };
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
@@ -107,8 +152,6 @@ export default class Home extends React.Component {
     this.setState({
       items: this.state.items.filter(item => item.id_product !== id)
     });
-
-  
   }
 
   handleSearch = event => {
@@ -135,18 +178,16 @@ export default class Home extends React.Component {
   handleReload = () => {
     window.location.reload(true);
   };
- 
-  logout=()=>{
-    
-    localStorage.removeItem('jwt')
-      swal("Logout Succes!", "Thanks fror Using Our Services!", "success")
-    
-    window.location.reload(true)
 
-  }
+  logout = () => {
+    localStorage.removeItem("jwt");
+    swal("Logout Succes!", "Thanks fror Using Our Services!", "success");
+
+    window.location.reload(true);
+  };
   render() {
-    console.log(localStorage,'local')
-    const { content, items,tokens } = this.state;
+    console.log(localStorage, "local");
+    const { content, items, tokens } = this.state;
     let cartItem = this.state.items;
     let total = cartItem.reduce(
       (prev, next) => prev + next.quantity * next.price,
@@ -156,10 +197,12 @@ export default class Home extends React.Component {
     // console.log(total, "total");
     // console.log(this.state.content);
     // console.log(quantities, "quantities");
-   console.log(tokens)
-   
+    // console.log(tokens);
+    // const query = new URLSearchParams(this.props.location.search);
+    // let pages = query.get("page");
+    // console.log(pages);
+
     return (
-      
       <Row>
         <Col span={18}>
           <Layout>
@@ -171,10 +214,12 @@ export default class Home extends React.Component {
                   <Icon type="shop" style={{ fontSize: 29 }} />
                 </Menu.Item>
                 <Menu.Item key="2">
-                  <Icon type="video-camera" style={{ fontSize: 29 }} />
-                </Menu.Item>
-             
+                <Link to={"/History"}>
+                <Icon style={{ fontSize: 25}} type="fund" />
                
+                </Link>
+                </Menu.Item>
+
                 <Menu.Item key="3">
                   <AddProduct />
                   <Icon
@@ -182,28 +227,27 @@ export default class Home extends React.Component {
                     style={{ color: "green", fontSize: 29 }}
                   />
                 </Menu.Item>
-               
-                  {/* {tokens.length === 0 ?( */}
-                <Menu.Item key="4">
-              
-                <Icon
-                onClick={this.logout}
-                  type="logout"
-                  style={{ color: "red", fontSize: 29, left: 4 }}
-                />
-              
-              </Menu.Item>
-                 {/* ):( */}
-               
-                 <Menu.Item key="5">
-                 <Login />
+
+                {tokens != null && tokens.length > 1 ? 
+                (
+                  <Menu.Item key="4">
+                  <Icon
+                    onClick={this.logout}
+                    type="logout"
+                    style={{ color: "red", fontSize: 29, left: 4 }}
+                  />
+                </Menu.Item>
+                 
+                ) : (
+                 
+                   <Menu.Item key="5">
+                   <Login />
                    <Icon
                      type="user-add"
-                     style={{ color: "red", fontSize: 29, left: 4 }}
+                     style={{ color: "green", fontSize: 29, left: 4 }}
                    />
-                 
                  </Menu.Item>
-               {/* )} */}
+                )}
               </Menu>
             </Sider>
             <Layout>
@@ -227,7 +271,7 @@ export default class Home extends React.Component {
                             <p> ChocoShop</p>
                           </Col>
                           <Col span={12} style={{ right: -40 }}>
-                            <a>
+                            <a href="image">
                               <img
                                 src="https://image.flaticon.com/icons/svg/1312/1312173.svg"
                                 alt="hr"
@@ -238,7 +282,8 @@ export default class Home extends React.Component {
                           </Col>
                         </Row>
                       </Col>
-                      <Col span={14}>
+                      <Col span={16}>
+                     
                         <div>
                           <form onSubmit={this.handleSearch}>
                             <div
@@ -264,9 +309,15 @@ export default class Home extends React.Component {
                             </div>
                           </form>
                         </div>
+                       
                       </Col>
+                      
+                     
                     </Row>
                   </Col>
+                  <Col span ={6}><button onClick={this.sortAscending} style={{height:20}}>asc</button>
+        <button onClick={this.sortDescending} style={{height:20}}>desc</button>
+                      </Col>
                 </Row>
               </Header>
               <Content
@@ -324,50 +375,51 @@ export default class Home extends React.Component {
                                   }}
                                   width="50%"
                                   src="https://image.flaticon.com/icons/svg/179/179372.svg"
+                                  alt="ab"
                                 />
                               )}
                               <p>Rp. {this.formatNumber(cont.price)} </p>
-                                 
+                              {tokens != null && tokens.length > 1 ? (
                               <Row>
-                              {this.state.tokens > 0 ? 
-                              <div>
-                                <Col span={12}>
-                                  {" "}
-                                  <p>
-                                    <EditProduct
-                                      count={cont}
-                                      id_product={cont.id_product}
-                                    />
-                                  </p>
-                                </Col>
-                                <Col span={12}>
-                                  {" "}
-                                  <p>
-                                    <a
-                                      onClick={() => {
-                                        axios
-                                          .delete(
-                                            `http://localhost:5050/product/${cont.id_product}`
-                                          )
-                                          .then(res => {
-                                            swal(
-                                              "Delete  Succes!",
-                                              "Data has been Deleted!",
-                                              "success"
-                                            ).then(() => {
-                                              window.location.reload(true);
-                                            });
-                                          });
-                                      }}
-                                    >
-                                      Delete
-                                    </a>
-                                  </p>
-                                </Col>
-                                </div>
-                                 : ""} 
+                               
+                                  <div>
+                                    <Col span={12}>
+                                      {" "}
+                                      <p>
+                                        <EditProduct
+                                          count={cont}
+                                          id_product={cont.id_product}
+                                        />
+                                      </p>
+                                    </Col>
+                                    <Col span={12}>
+                                      {" "}
+                                      <p>
+                                        <a href='delete'
+                                          onClick={() => {
+                                            axios
+                                              .delete(
+                                                `http://localhost:5050/product/${cont.id_product}`
+                                              )
+                                              .then(res => {
+                                                swal(
+                                                  "Delete  Succes!",
+                                                  "Data has been Deleted!",
+                                                  "success"
+                                                ).then(() => {
+                                                  window.location.reload(true);
+                                                });
+                                              });
+                                          }}
+                                        >
+                                          Delete
+                                        </a>
+                                      </p>
+                                    </Col>
+                                  </div>
+                                
                               </Row>
-                              
+                              ):("" )}
                             </Card>
                           </Col>
                         );
@@ -479,6 +531,11 @@ export default class Home extends React.Component {
             </Button>
           </div>
         </Col>
+        {/* <Router>
+      <Route exact path="/" component={Home} />
+      <Route path ='/history' component={History} />
+
+    </Router> */}
       </Row>
     );
   }
