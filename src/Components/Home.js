@@ -194,6 +194,7 @@ console.log(this.state.newData,'2')
       0
     );
     let quantities = cartItem.reduce((prev, next) => prev + next.quantity, 0);
+    console.log(quantities,'quan')
     // console.log(total, "total");
     // console.log(this.state.content);
     // console.log(quantities, "quantities");
@@ -214,7 +215,7 @@ console.log(this.state.newData,'2')
                   <Icon type="shop" style={{ fontSize: 29 }} />
                 </Menu.Item>
                 <Menu.Item key="2">
-                <Link to={"/History"}>
+                <Link to={"/history"}>
                 <Icon style={{ fontSize: 25}} type="fund" />
                
                 </Link>

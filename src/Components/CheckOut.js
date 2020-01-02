@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Button } from "antd";
 import Axios from "axios";
 import swal from "sweetalert";
+import jsPDF from 'jspdf'
 
 class CheckOut extends React.Component {
   state = {
@@ -34,7 +35,7 @@ class CheckOut extends React.Component {
 
     let myDatan = myData.toString();
 
-    
+    let id_receipt=this.state.id
     let total = this.props.total;
     let ppn = total * 0.1;
     let sumTotal = total + ppn;
@@ -58,8 +59,39 @@ class CheckOut extends React.Component {
           "success"
         )
       )
+      .then(()=>{
+        document.location.href = "/";
+        var doc = new jsPDF();
+        let space = 10;
+        doc.text(`CHocoShop`, 10, (space += 10));
+        doc.text(` ID Receipt: ${id_receipt}`, 10, (space += 10));
+        doc.text(`CHocoShop`, 10, (space += 10));
+        
+        // doc.text(`Cashier ${cashier}`, 10, (space += 10));
+        // doc.text(`Cashier ${cashier}`, 10, 30);
+        // if (checkout.length > 0) {
+        dataCheckout.map(data => {
+          // doc.text(`${items.name} ${items.count}x Rp. ${this.formatNumber(items)}`, 10, 10);
+          doc.text(
+            `${data.name} ${data.quantity}x Rp. ${this.formatNumber(
+              data.price
+            )}`,
+            10,
+            (space += 10)
+          );
+        });
+        // }
+        doc.text(
+          `Total Rp. ${this.formatNumber(total)}`,
+          10,
+          (space += 10)
+        );
+        doc.text(`Total Quantities ${quantity}`)
+        doc.text(`Payment Cash`, 10, (space += 10));
+        doc.save(`${id_receipt}.pdf`);
+      })
       .then(() => {
-        window.location.reload(true);
+        // window.location.reload(true);
       });
 
     // console.log(dataCheckout[0].name,'checkout')
@@ -88,6 +120,17 @@ class CheckOut extends React.Component {
     });
     console.log(this.state.ProductStore, "pro");
   };
+  jsPdfGenerator=()=>{
+    var doc = new jsPDF('p','pt')
+    //add some text of the pdf
+    doc.text(20,20,'this is')
+    //set the font for pdf
+    doc.setFontType('courier')
+    doc.setFontType('normal')
+    doc.text(20,30,'this is text with courier font')
+    //save the document
+    doc.save('generated.pdf')
+  }
   render() {
     let dataCheckout = this.props.dataCheckout;
     let total = this.props.total;

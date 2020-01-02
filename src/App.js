@@ -14,7 +14,7 @@ function App() {
 
     <Router>
       <Route exact path="/" component={Home} />
-      <Route path ='/' component={History} />
+      <Route path ='/history' component={History} />
 
     </Router>
     
