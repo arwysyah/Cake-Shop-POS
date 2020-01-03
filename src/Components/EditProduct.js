@@ -94,7 +94,7 @@ export default class EditProduct extends React.Component {
       $imagePreview = <img src={imagePreviewUrl} alt ="i"/>;
     } else {
       $imagePreview = (
-        <div className="previewText">Please select an Image for Preview</div>
+      <p></p>
       );
     }
     const { visible, loading, count } = this.state;
@@ -141,8 +141,9 @@ export default class EditProduct extends React.Component {
                   <img
                     src={this.state.image_url}
                     alt="img"
-                    style={{ height: 50, width: 60 }}
+                    style={{ height: 120, width: 110 }}
                   />
+                  <p></p>
                   <input
                     className="image_url"
                     type="file"

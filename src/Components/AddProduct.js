@@ -175,18 +175,7 @@ export default class AddProduct extends React.Component {
               />
             </Form.Item>
             <Form.Item>
-              {/* <Input
-                prefix={
-                  <Icon
-                    type="money-collect"
-                    style={{ color: "rgba(0,0,0,.25)" }}
-                  />
-                }
-                placeholder="category"
-                name="category"
-                //  value={this.state.price}
-                onChange={this.handleChange}
-              /> */}
+             
               <div className="input-field col s12">
                 <select
                   name="category"

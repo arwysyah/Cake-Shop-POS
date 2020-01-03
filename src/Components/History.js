@@ -25,7 +25,7 @@ export default class History extends React.Component {
   };
 
   async componentDidMount() {
-    await this.getTodaysIncome();
+  
     await this.handleHistory();
   }
   handleHistory = () => {
@@ -55,42 +55,83 @@ export default class History extends React.Component {
   formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
-  getTodaysIncome() {
-    let dateNow = new Date();
-    // console.log("date Today", dateNow.toLocaleString().substring(0, 8));
-    let filterTodayTransaction = this.state.history.map((item, i) => {
-      return (
-        dateFormat(item.transaction_at)
-          .toString()
-          .substring(0, 8)
-          .search(dateNow.toString().substring(0, 8)) !== -1
-      );
-    });
-    this.setState({ dataTodayIncome: filterTodayTransaction });
-    // console.log(filterTodayTransaction,'today')
-  }
+  dateFormats = date_data => {
+    // console.log(date_data);
+    let arrDate = String(date_data)
+      .slice(0, 10)
+      .split('-')
+      .reverse();
+    switch (Number(arrDate[1])) {
+      case 1:
+        arrDate[1] = ' January ';
+        break;
+      case 2:
+        arrDate[1] = ' February ';
+        break;
+      case 3:
+        arrDate[1] = ' March ';
+        break;
+      case 4:
+        arrDate[1] = ' April ';
+        break;
+      case 5:
+        arrDate[1] = ' Mei ';
+        break;
+      case 6:
+        arrDate[1] = ' June ';
+        break;
+      case 7:
+        arrDate[1] = ' Jule ';
+        break;
+      case 8:
+        arrDate[1] = ' August ';
+        break;
+      case 9:
+        arrDate[1] = ' September ';
+        break;
+      case 10:
+        arrDate[1] = ' October ';
+        break;
+      case 11:
+        arrDate[1] = ' November ';
+        break;
+      case 12:
+        arrDate[1] = ' December ';
+        break;
+    }
+    // console.log(arrDate);
+
+    return arrDate;
+  };
   render() {
     let dateNow = new Date();
     this.state.history.map((h, i) => {
       this.state.summa.push(h.total);
       this.state.order.push(h.quantities);
-      this.state.dataTodayIncome.push(
-        dateFormat(h.transaction_at)
-          .toString()
-          .substring(0, 8)
-          .search(dateNow.toString().substring(0, 8)) !== -1
-      );
+    //   this.state.dataTodayIncome.push(
+    //     dateFormat(h.transaction_at)
+    //       .toString()
+    //       .substring(0, 8)
+    //       .search(dateNow.toString().substring(0, 8)) !== -1
+    //   );
 
-      return console.log(h.quantities, h.total, h.transaction_at);
+    //   return console.log(h.quantities, h.total, h.transaction_at);
+    this.state.history.map((d,i)=>{
+      if(d.transaction_at==dateNow){
+        console.log('yes')
+ 
+      }else{
+        console.log('no')
+      }
+     })
     });
-    let today = this.state.dataTodayIncome;
-    parseInt(today);
+    
     // console.log(today, "dadas");
-    let totalIncomeDay = today.reduce((prev, next) => prev + next.total, 0);
+    // let totalIncomeDay = today.reduce((prev, next) => prev + next.total, 0);
     // console.log(totalIncomeDay, "totalincome");
     // console.log(this.state.order, this.state.summa, "summa");
     // const sumOrder = order.reduce((a, b) => a + b, 0);
-    console.log(this.state.dataTodayIncome, "ti");
+  
 
     // console.log(NewTotal, "Totalsum");
     // console.log(sumOrder, "su,Order");
@@ -125,6 +166,7 @@ export default class History extends React.Component {
       {
         Header: "Transaction Date",
         accessor: "transaction_at"
+        
       }
     ];
     console.log("hs", this.state.history);
@@ -133,15 +175,22 @@ export default class History extends React.Component {
     const SumOrder = order.reduce((a, b) => a + b, 0);
     console.log(typeof NewTotal, "summaaaa");
     console.log(SumOrder, "sum Order");
+    console.log(this.state.history.length,'length')
     
     let newArray =[]
     this.state.history.map((d,i)=>{
+      let dateToday =this.dateFormats(d.transaction_at)
+      // newArray.push(id.tra)
       return(
-        dateFormat(d.transaction_at)
-       
+        console.log(this.dateFormats(d.transaction_at))
+      
+      //  this.setState({
+         
+      //  })
       )
-      console.log('sass'.  dateFormat(d.transaction_at))
+      
     })
+    console.log(newArray,'resa')
 
     let AllSale = [];
     this.state.history.map(item => {
@@ -206,7 +255,7 @@ export default class History extends React.Component {
                 />
               </Col>
               <Col span={1}>
-                <a href="im">
+                <a >
                   <img
                     src="https://image.flaticon.com/icons/svg/1312/1312173.svg"
                     alt="hr"
@@ -233,17 +282,19 @@ export default class History extends React.Component {
               <Row>
                 <Col span={8}>
                   <Card style={{ color: "blue" }} style={{ width: 300 }}>
-                    <p>Card content</p>
-                    <p>{this.formatNumber(totalIncomeDay)}</p>
-                    <p>Card content</p>
+                    <p>Todays Income</p>
+                    <p>Rp. {this.formatNumber(NewTotal)}</p>
+                    
+                    <p>+2 % yesterday</p>
                   </Card>
                 </Col>
                 <Col span={8} >
                   {" "}
                   <Card style={{ width: 300 }}>
                     <p>Orders</p>
-                    <p>{this.formatNumber(SumOrder)}</p>
-                    <p>Last Week</p>
+                    <p style={{fontWeight:'bold'}}> Quantity:{this.formatNumber(SumOrder)} Items</p>
+                    <p style={{fontWeight:'bold'}}> Orders:{this.formatNumber(history.length)}</p>
+                    
                   </Card>
                 </Col>
                 <Col span={8}>

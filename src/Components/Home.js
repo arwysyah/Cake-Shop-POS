@@ -34,55 +34,84 @@ export default class Home extends React.Component {
     minValue: 0,
     maxValue: 9,
     searchValue: "",
+    sortBy: "name",
+    sortby: 'price',
     tokens: localStorage.getItem("jwt"),
-    newData:''
+
+    newData: ""
   };
 
   async componentDidMount() {
     await this.handleProduct();
   }
-  
-  sortAscending = () => {
-    let oldData =[]
-    const {content}= this.state
-content.map((d,i)=>{
-  oldData.push(d.name)
-  let newData = oldData.toString()
-  console.log(newData)
-  oldData.sort((a, b) => b.name - a.name) 
-  return( 
 
-    console.log(d.name)
+  sortAscending = e => {
+    let sort = this.state.sortBy;
+    const myData = this.state.content.sort(function(a, b) {
+      if (sort === "name") {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      } else {
+        if (a.price < b.price) return -1;
+        if (a.price > b.price) return 1;
+      }
+      return 0;
+    });
+    // console.log(myData);
+    this.setState({
+      content: myData
+    });
+  };
 
-    
-  )
-  
-})
-console.log(this.state.newData,'2')
-    
-       
   //  console.log('hello')
+
+  sortBy(value) {
+    this.setState({
+      sortby: value
+    });
   }
+  sortDescending = e => {
+    let sort = this.state.sortBy;
+    const myData = this.state.content.sort(function(a, b) {
+      if (sort === "name") {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      } else {
+        if (a.price < b.price) return -1;
+        if (a.price > b.price) return 1;
+      }
+      return 0;
+    });
+    // console.log(myData);
+    this.setState({
+      content: myData.reverse()
+    });
+ 
+  //   axios.get("http://localhost:5050/product").then(res => {
+  //     this.setState({
+  //       content: res.data.response
+  //     });
+  //   });
+  };
+  sortPrice = e => {
+    let sort = this.state.sortby;
+    const myData = this.state.content.sort(function(a, b) {
+      if (sort === 'price') {
+        if (a.price < b.price )return -1;
+        if (a.price > b.price) return 1;
+      } else {
+        if (a.price < b.price) return -1;
+        if (a.price > b.price) return 1;
+      }
+      return 0;
+    });
+    // console.log(myData);
+    this.setState({
+      content: myData.reverse()
+    });
+ 
 
-  sortDescending = () => {
-    const { content } = this.state;
-    content.sort((a, b) => a - b).reverse()
-    this.setState({ Content })
-  }
-
-//   sortAscending() {
-//     // this.setState(prevState => {
-//       const {content}=this.state
-//       content.name.sort((a, b) => (a.name - b.name))
-  
-//   }
-
-//   sortDescending() {
-//     const {content}=this.state
-//     // this.setState(prevState => {
-//       this.state.content.name.sort((a, b) => (b.name - a.name))
-//   // });
-// }
+  };
   handleProduct = () => {
     axios.get("http://localhost:5050/product").then(res => {
       this.setState({
@@ -180,10 +209,13 @@ console.log(this.state.newData,'2')
   };
 
   logout = () => {
-    localStorage.removeItem("jwt");
-    swal("Logout Succes!", "Thanks fror Using Our Services!", "success");
+    localStorage.removeItem("jwt")
+      swal("Logout Succes!", "Thanks fror Using Our Services!", "success");
 
     window.location.reload(true);
+     
+  
+    
   };
   render() {
     console.log(localStorage, "local");
@@ -194,7 +226,7 @@ console.log(this.state.newData,'2')
       0
     );
     let quantities = cartItem.reduce((prev, next) => prev + next.quantity, 0);
-    console.log(quantities,'quan')
+    console.log(quantities, "quan");
     // console.log(total, "total");
     // console.log(this.state.content);
     // console.log(quantities, "quantities");
@@ -215,10 +247,9 @@ console.log(this.state.newData,'2')
                   <Icon type="shop" style={{ fontSize: 29 }} />
                 </Menu.Item>
                 <Menu.Item key="2">
-                <Link to={"/history"}>
-                <Icon style={{ fontSize: 25}} type="fund" />
-               
-                </Link>
+                  <Link to={"/history"}>
+                    <Icon style={{ fontSize: 25 }} type="fund" />
+                  </Link>
                 </Menu.Item>
 
                 <Menu.Item key="3">
@@ -229,25 +260,22 @@ console.log(this.state.newData,'2')
                   />
                 </Menu.Item>
 
-                {tokens != null && tokens.length > 1 ? 
-                (
+                {tokens != null && tokens.length > 1 ? (
                   <Menu.Item key="4">
-                  <Icon
-                    onClick={this.logout}
-                    type="logout"
-                    style={{ color: "red", fontSize: 29, left: 4 }}
-                  />
-                </Menu.Item>
-                 
+                    <Icon
+                      onClick={this.logout}
+                      type="logout"
+                      style={{ color: "red", fontSize: 29, left: 4 }}
+                    />
+                  </Menu.Item>
                 ) : (
-                 
-                   <Menu.Item key="5">
-                   <Login />
-                   <Icon
-                     type="user-add"
-                     style={{ color: "green", fontSize: 29, left: 4 }}
-                   />
-                 </Menu.Item>
+                  <Menu.Item key="5">
+                    <Login />
+                    <Icon
+                      type="user-add"
+                      style={{ color: "green", fontSize: 29, left: 4 }}
+                    />
+                  </Menu.Item>
                 )}
               </Menu>
             </Sider>
@@ -269,56 +297,78 @@ console.log(this.state.newData,'2')
                         <Row>
                           <Col span={12}>
                             {" "}
-                            <p> ChocoShop</p>
+                            <div style={{marginLeft:-40}}>
+                            
+                      <Button onClick={this.sortPrice} type="primary">
+                       sort By Price
+                      </Button>
+
+                      </div>
+                  
                           </Col>
                           <Col span={12} style={{ right: -40 }}>
-                            <a href="image">
-                              <img
+                            <a>
+                              <p onClick={this.handleReload}>
+                                ChocoShop 
+                              </p>
+                              {/* <img
                                 src="https://image.flaticon.com/icons/svg/1312/1312173.svg"
                                 alt="hr"
                                 style={{ width: "85%" }}
                                 onClick={this.handleReload}
-                              />
+                              /> */}
                             </a>
                           </Col>
                         </Row>
                       </Col>
                       <Col span={16}>
-                     
-                        <div>
-                          <form onSubmit={this.handleSearch}>
-                            <div
-                              className="input-field"
-                              style={{
-                                marginLeft: -40,
-                                width: "30%",
-                                height: 30
-                              }}
-                            >
-                              {/* <Icon type="search" /> */}
-                              <input
-                                id="search"
-                                type="search"
-                                onChange={this.onchangeSearch}
-                                style={{
-                                  color: "black",
-                                  marginLeft: 80,
-                                  height: 40,
-                                  backgroundColor: "white"
-                                }}
-                              />
+                        <Row>
+                          <Col span={20}>
+                            {" "}
+                            <div>
+                              <form onSubmit={this.handleSearch}>
+                                <div
+                                  className="input-field"
+                                  style={{
+                                    marginLeft: -40,
+                                    width: "30%",
+                                    height: 30
+                                  }}
+                                >
+                                  {/* <Icon type="search" /> */}
+                                  <input
+                                    id="search"
+                                    type="search"
+                                    onChange={this.onchangeSearch}
+                                    style={{
+                                      color: "black",
+                                      marginLeft: 80,
+                                      height: 40,
+                                      backgroundColor: "white"
+                                    }}
+                                  />
+                                </div>
+                              </form>
                             </div>
-                          </form>
-                        </div>
-                       
+                          </Col>
+                          <Col span={4}>
+                          </Col>
+                        </Row>
                       </Col>
-                      
-                     
                     </Row>
                   </Col>
-                  <Col span ={6}><button onClick={this.sortAscending} style={{height:20}}>asc</button>
-        <button onClick={this.sortDescending} style={{height:20}}>desc</button>
-                      </Col>
+                  <Col span={6}>
+                  
+                    <div style={{ width: 300 }}>
+                      <Button onClick={this.sortAscending} type="primary">
+                        <Icon type="up" />
+                      </Button>
+
+                      <Button style={{marginLeft:10}} onClick={this.sortDescending} type="primary">
+                        <Icon type="down" />
+                      </Button>
+                    </div>
+                  </Col>
                 </Row>
               </Header>
               <Content
@@ -381,8 +431,7 @@ console.log(this.state.newData,'2')
                               )}
                               <p>Rp. {this.formatNumber(cont.price)} </p>
                               {tokens != null && tokens.length > 1 ? (
-                              <Row>
-                               
+                                <Row>
                                   <div>
                                     <Col span={12}>
                                       {" "}
@@ -396,7 +445,7 @@ console.log(this.state.newData,'2')
                                     <Col span={12}>
                                       {" "}
                                       <p>
-                                        <a 
+                                        <a
                                           onClick={() => {
                                             axios
                                               .delete(
@@ -418,9 +467,10 @@ console.log(this.state.newData,'2')
                                       </p>
                                     </Col>
                                   </div>
-                                
-                              </Row>
-                              ):("" )}
+                                </Row>
+                              ) : (
+                                ""
+                              )}
                             </Card>
                           </Col>
                         );
@@ -438,7 +488,7 @@ console.log(this.state.newData,'2')
             </Layout>
           </Layout>
         </Col>
-
+  
         <Col style={{ border: "1px solid black", height: 45 }} span={6}>
           <p style={{ textAlign: "center" }}>
             Cart
@@ -448,7 +498,12 @@ console.log(this.state.newData,'2')
             />
           </p>
         </Col>
+      
+       
+        
         <Col span={6}>
+        {/* {tokens !=null && tokens.length<1 ? ( */}
+          <div>
           <Row>
             {this.state.items.length > 0 ? (
               items.map((c, i) => (
@@ -531,7 +586,10 @@ console.log(this.state.newData,'2')
               Cancel
             </Button>
           </div>
+          </div>
+           {/* ): ('')} */}
         </Col>
+       
         {/* <Router>
       <Route exact path="/" component={Home} />
       <Route path ='/history' component={History} />

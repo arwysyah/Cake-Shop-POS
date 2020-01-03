@@ -64,10 +64,10 @@ class CheckOut extends React.Component {
        
         var doc = new jsPDF();
         let space = 10;
-        doc.text(`Kenzo CHocoShop`, 10, (space += 10));
+      doc.text(`CHocoShop`, 10, (space += 10));
         doc.text(`admin : ${admin}`, 10, (space += 10));
         doc.text(` ID Receipt: ${id_receipt}`, 10, (space += 10));
-        doc.text(`CHocoShop`, 10, (space += 10));
+        
         
         // doc.text(`Cashier ${cashier}`, 10, (space += 10));
         // doc.text(`Cashier ${cashier}`, 10, 30);
@@ -83,8 +83,20 @@ class CheckOut extends React.Component {
           );
         });
         // }
+        doc.text('--------------------------------------------------------------',
+        10,
+        (space += 10))
         doc.text(
           `Total Rp. ${this.formatNumber(total)}`,
+          10,
+          (space += 10)
+        );
+        doc.text(`PPN 10% : ${ppn}`, 10, (space += 10));
+        doc.text('--------------------------------------------------------------',
+        10,
+        (space += 10))
+        doc.text(
+          `Total Rp. ${this.formatNumber(sumTotal)}`,
           10,
           (space += 10)
         );
@@ -166,7 +178,7 @@ class CheckOut extends React.Component {
               loading={loading}
               onClick={this.handleOk}
             >
-              Submit
+              Ok
             </Button>
           ]}
         >

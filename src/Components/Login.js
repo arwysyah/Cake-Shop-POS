@@ -111,6 +111,7 @@ export default class Login extends React.Component {
                 }
                 placeholder="email"
                 name="email"
+                
                 //  value={this.state.price}
                 onChange={this.handleChange}
               />
@@ -125,6 +126,7 @@ export default class Login extends React.Component {
                 }
                 placeholder="password"
                 name="password"
+                type="password"
                 //  value={this.state.price}
                 onChange={this.handleChange}
                 // type='password'
