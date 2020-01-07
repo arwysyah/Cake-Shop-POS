@@ -1,68 +1,95 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# CAKE - SHOP API  Point Of Sales
 
-## Available Scripts
+Point of Sales System build with ReactJS 
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+ <div align='center'>
+  <img src='https://res.cloudinary.com/kenzo/image/upload/v1578380072/krx0qfrqxalaf5mfnpdw.png' width='800'  />
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+</div>
+<div align='center'>
+ <a href='https://hime-restaurant.now.sh/'>
+  <img src='https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg'' />
+  </a>
+  <a href="http://opensource.org/licenses/MIT">
+    <img title="MIT license" src="http://img.shields.io/badge/license-MIT-brightgreen.svg">
+  </a>
+  <a href="#">
+    <img title="Open Source Love" src="https://badges.frapsoft.com/os/v1/open-source.svg?v=102">
+  </a>
+   <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg"></a>
 
-### `npm test`
+</div>
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- List Foods
+- CRUD
+- Search & Sort
+- Add / Remove Cart
+- Print Receipt
+- History
+- Income
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Build Setup
 
-### `npm run eject`
+- Make sure you have backend [API](https://github.com/arwysyah/Cake-Shop-API)
+- Clone Repository `git clone https://github.com/arwysyah/cake-shop-POS.git`
+- Install Dependencies 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```bash
+  # with yarn
+  $ yarn install
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  # or with npm
+  $ npm install
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Run the development Server 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  ```bash
+  # with yarn
+  $ yarn start
+  
+  # or with npm
+  $ npm start
+  ```
 
-## Learn More
+- Open in browser with port `3000`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Stacks
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- ReactJS 
+- Ant Design
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Dependencies
 
-### Analyzing the Bundle Size
+- momentjs
+- simple-print
+- react-router-dom
+- reaviz
+- react-table-v6
+- axios
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+## Screenshots
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+![Home](https://res.cloudinary.com/kenzo/image/upload/v1578379992/lzucxrulxtsk99tuyovq.png)
 
-### Advanced Configuration
+![Order](https://res.cloudinary.com/iyansrcloud/image/upload/v1578036613/screenshot/Screenshot_31_fzly4z.png))
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+![Checkout](https://res.cloudinary.com/kenzo/image/upload/v1578380131/mqal0rkaeod84ipalp3b.png)
 
-### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+![Table Order](https://res.cloudinary.com/kenzo/image/upload/v1578380303/mzdkd7hhnrcmjzcpfvoc.png)
 
-### `npm run build` fails to minify
+![History](https://res.cloudinary.com/kenzo/image/upload/v1578380216/kbtgp0uujx4pyy7tpz54.png)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+---
+
+Copyright © 2020 by Arwy Syahputra Siregar

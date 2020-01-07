@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 
 // import jwt_decode from 'jwt-decode'
 const { Meta } = Card;
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content,Footer } = Layout;
 
 export default class Home extends React.Component {
   state = {
@@ -251,15 +251,9 @@ export default class Home extends React.Component {
                     <Icon style={{ fontSize: 25 }} type="fund" />
                   </Link>
                 </Menu.Item>
-
-                <Menu.Item key="3">
+{tokens!=null&&tokens.length!==0? 
                   <AddProduct />
-                  <Icon
-                    type="plus-square"
-                    style={{ color: "green", fontSize: 29 }}
-                  />
-                </Menu.Item>
-
+                  : ""}
                 {tokens != null && tokens.length > 1 ? (
                   <Menu.Item key="4">
                     <Icon
@@ -335,7 +329,7 @@ export default class Home extends React.Component {
                                     height: 30
                                   }}
                                 >
-                                  {/* <Icon type="search" /> */}
+                                
                                   <input
                                     id="search"
                                     type="search"
@@ -485,6 +479,8 @@ export default class Home extends React.Component {
                   total={15}
                 />
               </div>
+
+          <Footer style={{ textAlign: 'center' }}>Kenzo ChocoShop ©2020 Created by Arwy Syahputra Siregar</Footer>
             </Layout>
           </Layout>
         </Col>
@@ -587,7 +583,7 @@ export default class Home extends React.Component {
             </Button>
           </div>
           </div>
-           {/* ): ('')} */}
+         
         </Col>
        
         {/* <Router>
@@ -596,6 +592,7 @@ export default class Home extends React.Component {
 
     </Router> */}
       </Row>
+      
     );
   }
 }

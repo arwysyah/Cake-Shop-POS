@@ -10,9 +10,9 @@ import AddProduct from "../Components/AddProduct";
 import axios from "axios";
 import ReactTable from "react-table-v6";
 import "react-table-v6/react-table.css";
-import dateFormat from "dateformat";
+
 import {BarChart} from 'reaviz'
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content,Footer } = Layout;
 
 export default class History extends React.Component {
   state = {
@@ -180,7 +180,7 @@ export default class History extends React.Component {
     let newArray =[]
     this.state.history.map((d,i)=>{
       let dateToday =this.dateFormats(d.transaction_at)
-      // newArray.push(id.tra)
+     
       return(
         console.log(this.dateFormats(d.transaction_at))
       
@@ -204,7 +204,7 @@ export default class History extends React.Component {
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+          <Menu theme="dark" mode="inline" >
             <Menu.Item key="1">
               <Link to={"/"}>
                 <Icon type="shop" style={{ fontSize: 29 }} />
@@ -214,15 +214,10 @@ export default class History extends React.Component {
             <Menu.Item key="2">
               <Icon style={{ fontSize: 25 }} type="fund" />
             </Menu.Item>
-
-            <Menu.Item key="3">
+            {tokens!=null&&tokens.length!==0 ? 
+           
               <AddProduct />
-              <Icon
-                type="plus-square"
-                style={{ color: "green", fontSize: 29 }}
-              />
-            </Menu.Item>
-
+              : ""}
             {tokens != null && tokens.length > 1 ? (
               <Menu.Item key="4">
                 <Icon
@@ -246,7 +241,7 @@ export default class History extends React.Component {
           <Header style={{ background: "#fff", padding: 0 }}>
             <Row>
               <Col span={8}>
-                {" "}
+                
                 <Icon
                   className="trigger"
                   type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
@@ -321,11 +316,12 @@ export default class History extends React.Component {
             <div style={{ marginTop: 60 }}>
               <ReactTable
                 columns={colomns}
-                data={this.state.history}
+                data={this.state.history.reverse()}
                 defaultPageSize={5}
               />
             </div>
           </Content>
+          <Footer style={{ textAlign: 'center' }}>Kenzo ChocoShop ©2020 Created by Arwy Syahputra Siregar</Footer>
         </Layout>
       </Layout>
     );

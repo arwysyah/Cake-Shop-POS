@@ -101,7 +101,7 @@ export default class AddProduct extends React.Component {
         <Icon
           onClick={this.showModal}
           type="plus-square"
-          style={{ color: "green", fontSize: 29, left: 4 }}
+          style={{ color: "green", fontSize: 29, marginLeft:22,marginTop:-14 }}
         />
         <Modal
           visible={visible}
