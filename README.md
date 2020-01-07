@@ -1,4 +1,4 @@
-# CAKE - SHOP API  Point Of Sales
+# CAKE - SHOP  Point Of Sales
 
 Point of Sales System build with ReactJS 
 
