@@ -80,7 +80,7 @@ Point of Sales System build with ReactJS
 
 ![Home](https://res.cloudinary.com/kenzo/image/upload/v1578379992/lzucxrulxtsk99tuyovq.png)
 
-![Order](https://res.cloudinary.com/iyansrcloud/image/upload/v1578036613/screenshot/Screenshot_31_fzly4z.png))
+![Order]((https://res.cloudinary.com/kenzo/image/upload/v1578380072/krx0qfrqxalaf5mfnpdw.png))
 
 ![Checkout](https://res.cloudinary.com/kenzo/image/upload/v1578380131/mqal0rkaeod84ipalp3b.png)
 
